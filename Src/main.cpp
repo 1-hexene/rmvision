@@ -6,18 +6,18 @@
 #include <cmath>
 #include <armorParam.h>
 #include <Inc/LightDescriptor.h>
-#include <Inc/armorDescriptor.h>
+#include "Inc/armorDescriptor.h"
 
 using namespace std;
 using namespace cv;
 
 // cameara set
 Mat cameraMatrix = (Mat_<double>(3,3) <<
-                    2397.23606636724, 0, 756.189524371840,
-		            0, 2395.25929477876, 548.016083354964,
+                    2413.60174323956, 0, 719.915121318174,
+		            0, 2412.32933298837, 532.984303033096,
 		            0, 0, 1);
 
-Mat distCoeffs = (Mat_<double>(1,5) << 0.00407133266124051, 0.0266294010978755, 0, 0, 0);
+Mat distCoeffs = (Mat_<double>(1,5) << -0.0331357167629687, 0.149106285066012, 0, 0, 0);
 
 // 鏋涓庣浉鏈虹殑鐩稿浣嶅Э
 Mat camera_gun_matrix = (Mat_<double>(4,4) <<
@@ -371,6 +371,77 @@ int main() {
         cout << "Error in opening camera" << endl;
         return -1;
     }
+
+    int nRet = -1;
+    void*  m_handle = NULL;
+    unsigned int nTLayerType = MV_USB_DEVICE;
+    MV_CC_DEVICE_INFO_LIST m_stDevList = {0};
+    nRet = MV_CC_EnumDevices(nTLayerType, &m_stDevList);
+    if (MV_OK != nRet)
+    {
+        printf("error: EnumDevices fail [%x]\n", nRet);
+        return -1;
+    }
+    int i = 0;
+    if (m_stDevList.nDeviceNum == 0)
+    {
+        printf("no camera found!\n");
+        return -1;
+    }
+
+    int nDeviceIndex = 0;
+    MV_CC_DEVICE_INFO m_stDevInfo = {0};
+    memcpy(&m_stDevInfo, m_stDevList.pDeviceInfo[nDeviceIndex], sizeof(MV_CC_DEVICE_INFO));
+    nRet = MV_CC_CreateHandle(&m_handle, &m_stDevInfo);
+    if (MV_OK != nRet)
+    {
+        printf("error: CreateHandle fail [%x]\n", nRet);
+        return -1;
+    }
+
+    unsigned int nAccessMode = MV_ACCESS_Exclusive;
+    unsigned short nSwitchoverKey = 0;
+    do
+    {
+        nRet = MV_CC_OpenDevice(m_handle, nAccessMode, nSwitchoverKey);
+        if (MV_OK != nRet)
+        {
+            printf("error: OpenDevice fail [%x]\n", nRet);
+            return -1;
+        }
+    } while (MV_OK != nRet);
+
+    nRet = MV_CC_SetEnumValue(m_handle, "PixelFormat", 0x02180014);
+    if (MV_OK != nRet)
+    {
+        printf("error: Setting PixelFormat for camera[0x%x]\n", nRet);
+        return -1;
+    }
+
+    MV_FRAME_OUT stOutFrame = {0};
+    MV_FRAME_OUT_INFO_EX stFrameInfo;
+    memset(&stFrameInfo, 0, sizeof(MV_CC_DEVICE_INFO_LIST));
+
+    nRet = MV_CC_StartGrabbing(m_handle);
+    if (MV_OK != nRet)
+    {
+        printf("MV_CC_StartGrabbing fail! nRet [%x]\n", nRet);
+        return -1;
+    }
+    while(waitKey(1) != 'q')
+    {
+        do
+        {
+            nRet = MV_CC_GetOneFrameTimeout(m_handle, frame_buffer, sizeof(frame_buffer), &stFrameInfo, 100);
+
+            if (MV_OK != nRet)
+            {
+                printf("error: GetFrame fail [%x]\n", nRet);
+                controller_input(can, 0, 0);
+                continue;
+            }
+
+        } while (MV_OK != nRet);
 
     ArmorDetector detector;
     detector.init(RED);

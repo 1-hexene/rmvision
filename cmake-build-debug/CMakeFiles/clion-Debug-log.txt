@@ -1,0 +1,9 @@
+"D:\Clion\CLion 2024.1.4\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=D:/Clion/CLion 2024.1.4/bin/ninja/win/x64/ninja.exe" -G Ninja -S D:\Gitee\rm_-vision_for_-linux -B D:\Gitee\rm_-vision_for_-linux\cmake-build-debug
+-- OpenCV ARCH: x64
+-- OpenCV RUNTIME: vc16
+-- OpenCV STATIC: OFF
+-- Found OpenCV 4.10.0 in D:/OpenCV/opencv/build/x64/vc16/lib
+-- You might need to add D:\OpenCV\opencv\build\x64\vc16\bin to your PATH to be able to run your applications.
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: D:/Gitee/rm_-vision_for_-linux/cmake-build-debug
