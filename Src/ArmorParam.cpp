@@ -1,4 +1,4 @@
-#include "ArmorParam.h"
+#include "armorParam.h"
 
 ArmorParam::ArmorParam()
 {

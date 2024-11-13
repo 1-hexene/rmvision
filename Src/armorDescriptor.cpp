@@ -1,4 +1,4 @@
-#include "ArmorDescriptor.h"
+#include "armorDescriptor.h"
 
 
 ArmorDescriptor::ArmorDescriptor()// 默认构造函数，初始化armorDescriptor的一些基本属性
@@ -59,5 +59,43 @@ void ArmorDescriptor::getFrontImg(const Mat& grayImg)
 
 }
 
+cv::Mat ArmorDescriptor::measure(const cv::Mat& cameraMatrix, const cv::Mat& distCoeffs) {
+    std::vector<cv::Point3d> objectPoints;
+    objectPoints.push_back(cv::Point3d(-65, 28, 0));
+    objectPoints.push_back(cv::Point3d(-65, -28, 0));
+    objectPoints.push_back(cv::Point3d(65, 28, 0));
+    objectPoints.push_back(cv::Point3d(65, -28, 0));
 
+    cv::Mat rvec;
+    cv::Mat tvec;
+    cv::Mat rmat;
+    solvePnP(objectPoints, vertex, cameraMatrix, distCoeffs, rvec, tvec);
+    Rodrigues(rvec, rmat);
+
+    cv::Mat armor_cam_matrix;
+    cv::Mat supplement = (cv::Mat_<double>(1, 4) << 0, 0, 0, 1);
+    cv::Mat zero_coordinate = (cv::Mat_<double>(4, 1) << 0, 0, 0, 1);
+    hconcat(rmat, tvec, armor_cam_matrix);
+    vconcat(armor_cam_matrix, supplement, armor_cam_matrix);
+
+    coordinate = armor_cam_matrix * zero_coordinate;
+    cv::Mat distance_square = coordinate.t() * coordinate;
+    distance = std::sqrt(distance_square.at<double>(0, 0));
+
+    return coordinate;
+}
+
+void ArmorDescriptor::show(cv::Mat& img, cv::Scalar color) {
+    std::vector<cv::Point2i> points;
+    for (int j = 0; j < 4; j++) {
+        points.push_back(Point(static_cast<int>(vertex[j].x), static_cast<int>(vertex[j].y)));
+    }
+    polylines(img, points, true, color, 2, 8, 0);
+}
+
+void ArmorDescriptor::show_distance(cv::Mat& img) {
+    std::stringstream ss;
+    ss << "Distance: " << distance;
+    putText(img, ss.str(), vertex[0], FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 255, 0), 2);
+}
 
