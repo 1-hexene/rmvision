@@ -42,14 +42,9 @@ float distance(const cv::Point_<T>& pt1, const cv::Point_<T>& pt2)
 
 int main() 
 {
-    VideoCapture cap(0);
-    usb_can can("/dev/ttyS1", 2000000);
+    usb_can can("/dev/ttyS5", 2000000);
     can.usb_open();
-    if (!cap.isOpened()) {
-        cout << "Error in opening camera" << endl;
-        return -1;
-    }
-
+    
     int nRet = -1;
     void* m_handle = NULL;
     unsigned int nTLayerType = MV_USB_DEVICE;
@@ -74,6 +69,9 @@ int main()
         return -1;
     }
 
+    MV_FRAME_OUT stOutFrame = {0};
+    MV_FRAME_OUT_INFO_EX stFrameInfo;
+    
     unsigned int nAccessMode = MV_ACCESS_Exclusive;
     unsigned short nSwitchoverKey = 0;
     nRet = MV_CC_OpenDevice(m_handle, nAccessMode, nSwitchoverKey);
@@ -97,12 +95,26 @@ int main()
     ArmorDetector detector;
     detector.init(RED);
 
-    double fps = cap.get(CAP_PROP_FPS);
-    cout << "Frames fps:" << fps << endl;
+    // double fps = cap.get(CAP_PROP_FPS);
+    // cout << "Frames fps:" << fps << endl;
 
     while (true) {
+        do
+        {
+            nRet = MV_CC_GetOneFrameTimeout(m_handle, frame_buffer, sizeof(frame_buffer), &stFrameInfo, 100);
+            
+            if (MV_OK != nRet)
+            {
+                printf("error: GetFrame fail [%x]\n", nRet);
+                controller_input(can, 0, 0);
+                continue;
+            }
+
+        } while (MV_OK != nRet);
+
         Mat frame, adjustImg;
-        cap >> frame;
+        Mat frame_cam(1080, 1440, CV_8UC3, frame_buffer);
+        frame = frame_cam.clone();
         if (frame.empty()) break;
 
         imshow("capture", frame);
@@ -139,9 +151,9 @@ int main()
         }
 
         // FPS display
-        double current_fps = cap.get(CAP_PROP_FPS);
-        string FPS = "fps:" + to_string(current_fps);
-        putText(detector.getDebugImg(), FPS, Point(3, 20), FONT_HERSHEY_TRIPLEX, 0.5, Scalar(0, 255, 0), 1);
+        //double current_fps = cap.get(CAP_PROP_FPS);
+        // string FPS = "fps:" + to_string(current_fps);
+        // putText(detector.getDebugImg(), FPS, Point(3, 20), FONT_HERSHEY_TRIPLEX, 0.5, Scalar(0, 255, 0), 1);
         imshow("armors", detector.getDebugImg());
 
         int key = waitKey(1);
@@ -149,7 +161,7 @@ int main()
     }
 
     can.usb_close();
-    cap.release();
+    // cap.release();
     destroyAllWindows();
     return 0;
 }

@@ -1,0 +1,38 @@
+[
+{
+  "directory": "/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/build",
+  "command": "/usr/bin/c++  -I/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/./Inc -I/opt/MVS/include -I/opt/MVS -isystem /usr/include/opencv4 -g -std=gnu++11 -o CMakeFiles/RM_Project.dir/Src/main.cpp.o -c /home/orangepi/RM_For_Linux/rm_-vision_for_-linux/Src/main.cpp",
+  "file": "/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/Src/main.cpp",
+  "output": "CMakeFiles/RM_Project.dir/Src/main.cpp.o"
+},
+{
+  "directory": "/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/build",
+  "command": "/usr/bin/c++  -I/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/./Inc -I/opt/MVS/include -I/opt/MVS -isystem /usr/include/opencv4 -g -std=gnu++11 -o CMakeFiles/RM_Project.dir/Src/ArmorParam.cpp.o -c /home/orangepi/RM_For_Linux/rm_-vision_for_-linux/Src/ArmorParam.cpp",
+  "file": "/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/Src/ArmorParam.cpp",
+  "output": "CMakeFiles/RM_Project.dir/Src/ArmorParam.cpp.o"
+},
+{
+  "directory": "/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/build",
+  "command": "/usr/bin/c++  -I/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/./Inc -I/opt/MVS/include -I/opt/MVS -isystem /usr/include/opencv4 -g -std=gnu++11 -o CMakeFiles/RM_Project.dir/Src/armorDescriptor.cpp.o -c /home/orangepi/RM_For_Linux/rm_-vision_for_-linux/Src/armorDescriptor.cpp",
+  "file": "/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/Src/armorDescriptor.cpp",
+  "output": "CMakeFiles/RM_Project.dir/Src/armorDescriptor.cpp.o"
+},
+{
+  "directory": "/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/build",
+  "command": "/usr/bin/c++  -I/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/./Inc -I/opt/MVS/include -I/opt/MVS -isystem /usr/include/opencv4 -g -std=gnu++11 -o CMakeFiles/RM_Project.dir/Src/ArmorDetector.cc.o -c /home/orangepi/RM_For_Linux/rm_-vision_for_-linux/Src/ArmorDetector.cc",
+  "file": "/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/Src/ArmorDetector.cc",
+  "output": "CMakeFiles/RM_Project.dir/Src/ArmorDetector.cc.o"
+},
+{
+  "directory": "/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/build",
+  "command": "/usr/bin/c++  -I/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/./Inc -I/opt/MVS/include -I/opt/MVS -isystem /usr/include/opencv4 -g -std=gnu++11 -o CMakeFiles/RM_Project.dir/Src/can_usb.cc.o -c /home/orangepi/RM_For_Linux/rm_-vision_for_-linux/Src/can_usb.cc",
+  "file": "/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/Src/can_usb.cc",
+  "output": "CMakeFiles/RM_Project.dir/Src/can_usb.cc.o"
+},
+{
+  "directory": "/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/build",
+  "command": "/usr/bin/c++  -I/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/./Inc -I/opt/MVS/include -I/opt/MVS -isystem /usr/include/opencv4 -g -std=gnu++11 -o CMakeFiles/RM_Project.dir/Src/controller.cc.o -c /home/orangepi/RM_For_Linux/rm_-vision_for_-linux/Src/controller.cc",
+  "file": "/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/Src/controller.cc",
+  "output": "CMakeFiles/RM_Project.dir/Src/controller.cc.o"
+}
+]
