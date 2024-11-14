@@ -7,12 +7,13 @@ set(CMAKE_CXX_STANDARD 11)
 find_package(OpenCV REQUIRED)
 
 # add new source file
-set(SOURCES Src/main.cpp Src/ArmorParam.cpp Src/armorDescriptor.cpp)
+set(SOURCES Src/main.cpp Src/ArmorParam.cpp Src/armorDescriptor.cpp Src/ArmorDetector.cc Src/can_usb.cc Src/controller.cc)
 
 #include head file
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(./Inc)
 include_directories(/opt/MVS/include)
+include_directories(/opt/MVS/)
 LINK_DIRECTORIES(/opt/MVS/lib/aarch64/)
 add_executable(RM_Project ${SOURCES})
 

@@ -11,19 +11,21 @@ using namespace std;
 
 class ArmorDetector {
 public:
-    ArmorDetector() = default;
+    ArmorDetector();
     void init(int selfColor);
     void loadImg(Mat& img);
     Mat CaptureVideo(VideoCapture& video);
     int detect();
     Mat Solve_PnP(Mat &cameraMatrix, Mat &distCoeffs, vector<Point3f> &objectPoints, vector<Point2f> &ImagePoints);
-    ArmorDescriptor armor_select(vector<ArmorDescriptor> &armor_list, int method);
+    ArmorDescriptor armor_select(const std::vector<ArmorDescriptor>& armor_list, int method);
     Mat separateColors();
     Mat separateColors_2();
     void filterContours(vector<vector<Point>>& lightContours, vector<LightDescriptor>& lightInfos);
     void drawLightInfo(vector<LightDescriptor>& LD);
     vector<ArmorDescriptor> matchArmor(vector<LightDescriptor>& lightInfos);
     static bool armor_distance_sort_compare(ArmorDescriptor armor_1, ArmorDescriptor armor_2);
+    const std::vector<ArmorDescriptor>& getArmors() const { return _armors; }
+    const cv::Mat& getDebugImg() const { return _debugImg; }
     
 private:
     void adjustRec(cv::RotatedRect& rec);

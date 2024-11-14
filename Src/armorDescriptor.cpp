@@ -85,17 +85,16 @@ cv::Mat ArmorDescriptor::measure(const cv::Mat& cameraMatrix, const cv::Mat& dis
     return this -> coordinate;
 }
 
-void ArmorDescriptor::show(cv::Mat& img, cv::Scalar color) {
-    std::vector<cv::Point2i> points;
-    for (int j = 0; j < 4; j++) {
-        points.push_back(Point(static_cast<int>(vertex[j].x), static_cast<int>(vertex[j].y)));
-    }
-    polylines(img, points, true, color, 2, 8, 0);
-}
+//void ArmorDescriptor::show(cv::Mat& img, cv::Scalar color) {
+//    std::vector<cv::Point2i> points;
+//    for (int j = 0; j < 4; j++) {
+//        points.push_back(Point(static_cast<int>(vertex[j].x), static_cast<int>(vertex[j].y)));
+//    }
+//    polylines(img, points, true, color, 2, 8, 0);
+//}
 
-void ArmorDescriptor::show_distance(cv::Mat& img) {
-    std::stringstream ss;
-    ss << "Distance: " << distance;
-    putText(img, ss.str(), vertex[0], FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 255, 0), 2);
-}
-
+//void ArmorDescriptor::show_distance(cv::Mat& img) {
+//    std::stringstream ss;
+//    ss << "Distance: " << distance;
+//    putText(img, ss.str(), vertex[0], FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 255, 0), 2);
+//}
