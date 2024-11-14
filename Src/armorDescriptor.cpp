@@ -78,11 +78,11 @@ cv::Mat ArmorDescriptor::measure(const cv::Mat& cameraMatrix, const cv::Mat& dis
     hconcat(rmat, tvec, armor_cam_matrix);
     vconcat(armor_cam_matrix, supplement, armor_cam_matrix);
 
-    coordinate = armor_cam_matrix * zero_coordinate;
+    this -> coordinate = armor_cam_matrix * zero_coordinate;
     cv::Mat distance_square = coordinate.t() * coordinate;
-    distance = std::sqrt(distance_square.at<double>(0, 0));
+    this -> distance = std::sqrt(distance_square.at<double>(0, 0));
 
-    return coordinate;
+    return this -> coordinate;
 }
 
 void ArmorDescriptor::show(cv::Mat& img, cv::Scalar color) {

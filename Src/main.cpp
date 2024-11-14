@@ -12,7 +12,7 @@
 
 using namespace std;
 using namespace cv;
-// 距离补偿
+
 float compensation[5] = {0, 0.01, 0.02, 0.03, 0.04};
 
 unsigned char frame_buffer[5000000] = {};
@@ -33,9 +33,9 @@ Mat camera_gun_matrix = (Mat_<double>(4,4) <<
 
 
 template<typename T>
-float distance(const cv::Point_<T>& pt1, const cv::Point_<T>& pt2) // &閿熸枻鎷风ず鐩撮敓鎺ュ纰夋嫹閿熸枻鎷烽敓鏂ゆ嫹鏋氶敓鏂ゆ嫹閿熸枻鎷锋瓑閿熸枻鎷烽敓锟�
+float distance(const cv::Point_<T>& pt1, const cv::Point_<T>& pt2) 
 {
-    return std::sqrt(std::pow((pt1.x - pt2.x), 2) + std::pow((pt1.y - pt2.y), 2)); // 閿熸枻鎷烽敓缂磋鎷烽敓鏂ゆ嫹
+    return std::sqrt(std::pow((pt1.x - pt2.x), 2) + std::pow((pt1.y - pt2.y), 2)); 
 }
 
 int main() 
@@ -137,13 +137,15 @@ int main()
 
         detector.detect();
         ArmorDescriptor armor_target;
-        armor_target = armor_select(detector.matchArmor, 0); // matchArmor为存储了多个装甲板的向量
+        armor_target = armor_select(detector.matchArmor, 0);
 
-        if (detector.matchArmor.size() == 0){
+        if (detector.getArmors.size() == 0){
             controller_input(can, 0, 0);
             continue;
         }
-        
+
+        cv::Mat coordinate = armor_target.measure(cameraMatrix, distCoeffs);
+
         Mat aim_target;
 	double yaw_angle = 0;
 	double pitch_angle = 0;

@@ -45,6 +45,7 @@ public:
     std::array<cv::RotatedRect, 2> lightPairs;  // 存放灯条的旋转矩形
     float sizeScore;  // 大小评分
     float distScore;  // 距离评分
+    std::vector<cv::Point2d> points;
     float rotationScore;  // 旋转评分
     float finalScore;  // 最终评分
     double distance;  // 距离

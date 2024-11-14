@@ -13,7 +13,11 @@ class ArmorDetector {
 public:
     float ArmorDetector::distance(const cv::Point2f& pt1, const cv::Point2f& pt2) {
     return cv::norm(pt1 - pt2);
-}
+    }
+
+    const std::vector<ArmorDescriptor>& getArmors() const {
+        return _armors;
+    }
 
     void init(int selfColor) {
         if (selfColor == RED) { // RED = 0
