@@ -160,6 +160,28 @@ int main()
         if (key == 27 || key == 'q') break; 
     }
 
+    // release the camera
+    nRet = MV_CC_StopGrabbing(m_handle);
+    if (MV_OK != nRet)
+    {
+        printf("MV_CC_StopGrabbing fail! nRet [%x]\n", nRet);
+        return -1;
+    }
+
+    nRet = MV_CC_CloseDevice(m_handle);
+    if (MV_OK != nRet)
+    {
+        printf("error: CloseDevice fail [%x]\n", nRet);
+        return -1;
+    } 
+    
+    nRet = MV_CC_DestroyHandle(m_handle);
+    if (MV_OK != nRet)
+    {
+        printf("error: DestroyHandle fail [%x]\n", nRet);
+        return -1;
+    }
+
     can.usb_close();
     // cap.release();
     destroyAllWindows();
