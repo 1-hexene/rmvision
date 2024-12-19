@@ -35,14 +35,14 @@ bool usb_can::usb_open()
     ios.c_cflag |= CLOCAL | CREAD;
     cfmakeraw(&ios);
     speed_t speed = baud_rate;
-    cfsetispeed(&ios, speed);
-    cfsetospeed(&ios, speed);
+    cfsetispeed(&ios,B115200);
+    cfsetospeed(&ios,B115200);
     ios.c_cflag &= ~CSIZE;
     ios.c_cflag |= CS8;
     ios.c_cflag &= ~PARENB;
     ios.c_cflag &= ~CSTOPB;
     ios.c_cc[VTIME] = 0;
-    ios.c_cc[VMIN] = 1;
+    ios.c_cc[VMIN] = 0;
     tcflush(fd, TCIOFLUSH);
     tcsetattr(fd, TCSANOW, &ios);
     return USB_CAN_OK;
@@ -67,6 +67,7 @@ bool usb_can::data_write(unsigned char* data, int id, int length)
     can_data[0] = id >> 8;
     can_data[1] = id;
     memcpy(can_data + 2, data, 8);
+    //memcpy(can_data , data, 8);
     fd_set write_set;
     struct timeval tv;
  
@@ -88,6 +89,7 @@ bool usb_can::data_write(unsigned char* data, int id, int length)
         default:
             if (FD_ISSET(fd, &write_set))
             {
+                // ret = write(fd, can_data, length );
                 ret = write(fd, can_data, length + 2);
             }
             break;

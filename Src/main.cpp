@@ -42,7 +42,7 @@ float distance(const cv::Point_<T>& pt1, const cv::Point_<T>& pt2)
 
 int main() 
 {
-    usb_can can("/dev/ttyS5", 2000000);
+    usb_can can("/dev/ttyS5", 115200);
     can.usb_open();
     
     int nRet = -1;
@@ -52,12 +52,12 @@ int main()
     nRet = MV_CC_EnumDevices(nTLayerType, &m_stDevList);
     if (MV_OK != nRet) {
         printf("error: EnumDevices fail [%x]\n", nRet);
-        return -1;
+        //return -1;
     }
 
     if (m_stDevList.nDeviceNum == 0) {
         printf("no camera found!\n");
-        return -1;
+        //return -1;
     }
 
     int nDeviceIndex = 0;
@@ -66,7 +66,7 @@ int main()
     nRet = MV_CC_CreateHandle(&m_handle, &m_stDevInfo);
     if (MV_OK != nRet) {
         printf("error: CreateHandle fail [%x]\n", nRet);
-        return -1;
+        //return -1;
     }
 
     MV_FRAME_OUT stOutFrame = {0};
@@ -77,19 +77,19 @@ int main()
     nRet = MV_CC_OpenDevice(m_handle, nAccessMode, nSwitchoverKey);
     if (MV_OK != nRet) {
         printf("error: OpenDevice fail [%x]\n", nRet);
-        return -1;
+        //return -1;
     }
 
     nRet = MV_CC_SetEnumValue(m_handle, "PixelFormat", 0x02180014);
     if (MV_OK != nRet) {
         printf("error: Setting PixelFormat for camera[0x%x]\n", nRet);
-        return -1;
+        //return -1;
     }
 
     nRet = MV_CC_StartGrabbing(m_handle);
     if (MV_OK != nRet) {
         printf("MV_CC_StartGrabbing fail! nRet [%x]\n", nRet);
-        return -1;
+        //return -1;
     }
 
     ArmorDetector detector;
@@ -143,11 +143,11 @@ int main()
                 pitch_angle = asin(z / distance) + compensation[index];
             }
 
-            controller_input(can, yaw_angle, pitch_angle);
+            controller_input(can, 10, 10);
             cout << "yaw angle:" << yaw_angle << endl;
             cout << "pitch angle:" << pitch_angle << endl;
         } else {
-            controller_input(can, 0, 0);
+            controller_input(can, 10, 2000);
         }
 
         // FPS display

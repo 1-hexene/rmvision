@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/orangepi/RM_For_Linux/rm_-vision_for_-linux/./Inc -I/opt/MVS/include -I/opt/MVS -isystem /usr/include/opencv4
 
-CXX_FLAGS = -g -std=gnu++11
+CXX_FLAGS = -std=gnu++11
 

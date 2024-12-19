@@ -27,9 +27,9 @@ public:
     const std::vector<ArmorDescriptor>& getArmors() const { return _armors; }
     const cv::Mat& getDebugImg() const { return _debugImg; }
     
-private:
     void adjustRec(cv::RotatedRect& rec);
-    float distance(const cv::Point2f& pt1, const cv::Point2f& pt2);
+    template<typename T>
+    float distance(const cv::Point_<T>& pt1, const cv::Point_<T>& pt2);
 
 private:
     int _enemy_color;

@@ -56,7 +56,7 @@ Mat ArmorDetector::CaptureVideo(VideoCapture& video) {
 
 int ArmorDetector::detect() {
     _grayImg = separateColors_2();
-    imshow("grayImg", _grayImg);
+    // imshow("grayImg", _grayImg);
 
     int brightness_threshold = 205;
     Mat binBrightImg;
@@ -82,7 +82,6 @@ int ArmorDetector::detect() {
     _armors = matchArmor(lightInfos);
     if (_armors.empty()) {
         cout << "armor empty" << endl;
-        // return -1; // Optional, depending on the requirements
     }
 
     for (size_t i = 0; i < _armors.size(); i++) {
@@ -195,7 +194,37 @@ vector<ArmorDescriptor> ArmorDetector::matchArmor(vector<LightDescriptor>& light
             if (angleDiff > _param.light_max_angle_diff_ || lenDiff_ratio > _param.light_max_height_diff_ratio_) {
                 continue;
             }
-            // Additional matching conditions and armor creation can be added here
+            float dis = distance(leftLight.center, rightLight.center);
+            
+            float meanLen = (leftLight.length + rightLight.length) / 2;
+            
+            float yDiff = abs(leftLight.center.y - rightLight.center.y);
+            
+            float yDiff_ratio = yDiff / meanLen;
+            
+            float xDiff = abs(leftLight.center.x - rightLight.center.x);
+            
+            float xDiff_ratio = xDiff / meanLen;
+            
+            float ratio = dis / meanLen;
+            
+            if (yDiff_ratio > _param.light_max_y_diff_ratio_ || 
+                xDiff_ratio < _param.light_min_x_diff_ratio_ || 
+                ratio > _param.armor_max_aspect_ratio_ || 
+                ratio < _param.armor_min_aspect_ratio_) {
+                continue;
+            }
+
+            int armorType = ratio > _param.armor_big_armor_ratio ? BIG_ARMOR : SMALL_ARMOR; 
+            
+            float ratiOff = (armorType == BIG_ARMOR) ? max(_param.armor_big_armor_ratio-ratio, float(0)) :
+            max(_param.armor_small_armor_ratio-ratio, float(0));
+            float yOff = yDiff / meanLen;
+            float rotationScore = -(ratiOff * ratiOff + yOff * yOff);
+            ArmorDescriptor armor(leftLight, rightLight, armorType,
+                _grayImg, rotationScore, _param);
+            armors.emplace_back(armor);
+            break;
         }
     }
     return armors;
@@ -220,3 +249,19 @@ void ArmorDetector::adjustRec(cv::RotatedRect& rec) {
     }
 }
 
+template<typename T>
+float ArmorDetector::distance(const cv::Point_<T>& pt1, const cv::Point_<T>& pt2) {
+    return std::sqrt(std::pow((pt1.x - pt2.x), 2) + std::pow((pt1.y - pt2.y), 2));
+}
+
+//void ArmorDetector::drawPolylines(vector<ArmorDescriptor>& _armors)
+//{
+//    vector<Point2i> points;
+//    for (int j = 0; j < 4; j++) {
+//        points.push_back(Point(static_cast<int>(_armors[i].vertex[j].x),
+//            static_cast<int>(_armors[i].vertex[j].y)));
+//   }
+//    polylines(_debugImg, points, true, Scalar(0,255,0),
+///           1, 8, 0);
+//
+//}
