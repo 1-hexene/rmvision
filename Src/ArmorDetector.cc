@@ -64,7 +64,7 @@ int ArmorDetector::detect() {
 
     Mat element = getStructuringElement(MORPH_ELLIPSE, Size(3, 3));
     dilate(binBrightImg, binBrightImg, element);
-    imshow("dilate", binBrightImg);
+    // imshow("dilate", binBrightImg);
 
     vector<vector<Point>> lightContours;
     findContours(binBrightImg.clone(), lightContours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
@@ -171,7 +171,7 @@ void ArmorDetector::drawLightInfo(vector<LightDescriptor>& LD) {
             con.push_back(vertices[i]);
         }
         cons.push_back(con);
-        drawContours(_debugImg, cons, i, Scalar(0, 255, 255), 1, 8);
+        // drawContours(_debugImg, cons, i, Scalar(0, 255, 255), 1, 8);
         i++;
         delete vertices;
     }
@@ -215,7 +215,7 @@ vector<ArmorDescriptor> ArmorDetector::matchArmor(vector<LightDescriptor>& light
                 continue;
             }
 
-            int armorType = ratio > _param.armor_big_armor_ratio ? BIG_ARMOR : SMALL_ARMOR; 
+            int armorType = ratio > _param.armor_big_armor_ratio ? BIG_ARMOR : SMALL_ARMOR;
             
             float ratiOff = (armorType == BIG_ARMOR) ? max(_param.armor_big_armor_ratio-ratio, float(0)) :
             max(_param.armor_small_armor_ratio-ratio, float(0));

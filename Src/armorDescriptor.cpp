@@ -36,9 +36,9 @@ ArmorDescriptor::ArmorDescriptor(const LightDescriptor & lLight, const LightDesc
 
     vertex.resize(4); // 创建一个储存四个角点的容器
     vertex[0] = upper_l;
-    vertex[1] = upper_r;
-    vertex[2] = lower_r;
-    vertex[3] = lower_l;
+    vertex[1] = lower_l;
+    vertex[2] = upper_r;
+    vertex[3] = lower_r;
 
 
     type = armorType;

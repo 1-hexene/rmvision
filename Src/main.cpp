@@ -117,7 +117,7 @@ int main()
         frame = frame_cam.clone();
         if (frame.empty()) break;
 
-        imshow("capture", frame);
+        // imshow("capture", frame);
 
         frame.convertTo(adjustImg, -1, 1, -45); 
         detector.loadImg(adjustImg);
@@ -154,7 +154,7 @@ int main()
         //double current_fps = cap.get(CAP_PROP_FPS);
         // string FPS = "fps:" + to_string(current_fps);
         // putText(detector.getDebugImg(), FPS, Point(3, 20), FONT_HERSHEY_TRIPLEX, 0.5, Scalar(0, 255, 0), 1);
-        imshow("armors", detector.getDebugImg());
+        // imshow("armors", detector.getDebugImg());
 
         int key = waitKey(1);
         if (key == 27 || key == 'q') break; 
